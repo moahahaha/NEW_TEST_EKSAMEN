@@ -1,24 +1,24 @@
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'; //impport Vue composition API functions
 
 export default {
   setup() {
 
-    const testData = ref([]);
-    const newTest = ref('');
-    const books = ref([]);
+    const testData = ref([]); // store test items
+    const newTest = ref(''); //store input data
+    const books = ref([]); //book data
 
-    const newBook = ref({ ISBN: '', Tittel: '', Publiseringsar: '', AvdelingID: '' });
-
-
+    const newBook = ref({ ISBN: '', Tittel: '', Publiseringsar: '', AvdelingID: '' }); //store ny book dataen
 
 
+
+// fetch data bøker fra backend
     async function fetchBooks() {
       try {
-        const response = await fetch('http://10.0.0.156/books');
-        const data = await response.json();
-        books.value = data.books;
+        const response = await fetch('http://10.0.0.156/books');//send HTTP GET request til URL for å fetche data fra backend server
+        const data = await response.json(); //parse JSON responsen til javascript object
+        books.value = data.books; //gjør array book objects til en reactiv vue.js variable
         console.log("Books data:", data);
       } catch (error) {
         console.error('There was an error fetching the books:', error);
@@ -44,11 +44,11 @@ export default {
     async function addTest() {
       try {
         const response = await fetch('http://10.0.0.156/test', {
-          method: 'POST',
+          method: 'POST', //use POST method to add new item
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json' //set request content type til JSON
           },
-          body: JSON.stringify({ testItem: newTest.value })
+          body: JSON.stringify({ testItem: newTest.value }) //legg ny tets item i request body
         });
         if (response.ok) {
           fetchTestData(); // Call fetchTestData to update the test list
@@ -170,7 +170,7 @@ export default {
     <button @click="addTest">Add Test</button>
 
       <ul class="test-list">
-      <li v-for="test in testData" :key="test" class="test">{{ test }} <button @click="deleteTest(test)">Delete</button></li>
+      <li v-for="test in testData" :key="test" class="test">{{ test }} <button @click="deleteTest(test)">Delete</button></li> 
     </ul>
   </div>
 
